@@ -1,7 +1,6 @@
 #!/bin/bash
 
 PROFILE=$1
-LOGGING_DIR="$HOME/logs/tomcat"
 JAR_PATH="./build/libs/subway-0.0.1-SNAPSHOT.jar"
 
 txtrst='\033[1;37m' # White
@@ -31,7 +30,7 @@ startup() {
     exit 1
   fi
 
-  nohup java -jar -Dspring.profiles.active=$PROFILE $JAR_PATH 1> "$LOGGING_DIR/console.log" 2>&1 &
+  nohup java -jar -Dspring.profiles.active=$PROFILE $JAR_PATH 1> /dev/null 2>&1 &
   echo $! > ./pid.file
 
   echo ""
