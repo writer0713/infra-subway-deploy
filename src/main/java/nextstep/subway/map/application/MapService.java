@@ -1,5 +1,8 @@
 package nextstep.subway.map.application;
 
+import static net.logstash.logback.argument.StructuredArguments.*;
+
+import lombok.extern.slf4j.Slf4j;
 import nextstep.subway.line.application.LineService;
 import nextstep.subway.line.domain.Line;
 import nextstep.subway.map.domain.SubwayPath;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j(topic = "json")
 @Service
 @Transactional
 public class MapService {
@@ -30,6 +34,8 @@ public class MapService {
         Station sourceStation = stationService.findById(source);
         Station targetStation = stationService.findById(target);
         SubwayPath subwayPath = pathService.findPath(lines, sourceStation, targetStation);
+
+        log.info("[stations] {}, {}", kv("출발지", sourceStation.getName()), kv("도착지", targetStation.getName()));
 
         return PathResponseAssembler.assemble(subwayPath);
     }
