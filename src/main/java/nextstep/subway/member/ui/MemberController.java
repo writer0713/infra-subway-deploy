@@ -1,5 +1,6 @@
 package nextstep.subway.member.ui;
 
+import lombok.extern.slf4j.Slf4j;
 import nextstep.subway.auth.domain.AuthenticationPrincipal;
 import nextstep.subway.auth.domain.LoginMember;
 import nextstep.subway.member.application.MemberService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@Slf4j(topic = "file")
 @RestController
 public class MemberController {
     private MemberService memberService;
@@ -21,6 +23,7 @@ public class MemberController {
     @PostMapping("/members")
     public ResponseEntity createMember(@RequestBody MemberRequest request) {
         MemberResponse member = memberService.createMember(request);
+        log.info("[Sign up] {} => 회원가입 완료.", member.getEmail());
         return ResponseEntity.created(URI.create("/members/" + member.getId())).build();
     }
 
