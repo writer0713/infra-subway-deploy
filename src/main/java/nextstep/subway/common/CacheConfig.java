@@ -12,10 +12,11 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @EnableCaching
@@ -49,8 +50,9 @@ public class CacheConfig extends CachingConfigurerSupport {
 			.findAndRegisterModules()
 			.enable(SerializationFeature.INDENT_OUTPUT)
 			.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+			.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+			.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.registerModules(new JavaTimeModule());
-			// .activateDefaultTyping(originalMapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
 	}
 }
